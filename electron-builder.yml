@@ -1,0 +1,42 @@
+appId: com.lorenest.app
+productName: LoreNest
+copyright: Copyright © 2025 LoreNest
+
+# 构建产物目录
+directories:
+  output: dist
+  buildResources: build
+
+# 打包的文件范围
+files:
+  - out/**/*
+  - package.json
+
+# 把 sql-wasm.wasm 复制到 resources 根目录，主进程用 process.resourcesPath 读取
+extraResources:
+  - from: node_modules/sql.js/dist/sql-wasm.wasm
+    to: sql-wasm.wasm
+
+# Windows 配置
+win:
+  target:
+    - target: nsis       # 安装包（.exe 安装程序）
+      arch: [x64]
+    - target: portable   # 便携版（单文件 .exe，可直接运行）
+      arch: [x64]
+  icon: build/icon.png   # electron-builder 自动转换为 ICO
+
+# NSIS 安装包选项
+nsis:
+  oneClick: false          # false = 显示安装向导，用户可选目录
+  allowToChangeInstallationDirectory: true
+  installerLanguages:
+    - zh_CN
+  language: 2052           # 简体中文
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: LoreNest
+
+# 便携版
+portable:
+  artifactName: LoreNest-${version}-portable.exe
